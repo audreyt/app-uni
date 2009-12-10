@@ -4,23 +4,23 @@ use 5.008;
 use strict;
 use warnings;
 use constant SOURCE => 'unicore/UnicodeData.txt';
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub main {
     my ($file) = grep -f, map { "$_/".SOURCE } @INC
-        or die "Cannot find: ".SOURCE;
+        or die "Cannot find: ".SOURCE.$/;
 
     binmode STDOUT, ':utf8';
     open my $fh, '<', $file
-        or die "Cannot open $file: $!";
+        or die "Cannot open $file: $!$/";
 
     my $regex = join ' ', @_;
 
     while (<$fh>) {
-        /$regex/io and /(\w+);([^;]+)/ or next;
+        (/$regex/io and /(\w+);([^;]+)/) or next;
 
         my ($code, $name) = ($1, $2);
-        $name =~ /$regex/io or $code =~ /$regex/io or next;
+        ($name =~ /$regex/io or $code =~ /$regex/io) or next;
 
         print $code, ' ', chr hex $code, ' ', $name, $/;
     }
@@ -40,7 +40,7 @@ App::Uni - Command-line utility to grep UnicodeData.txt
 
 =head1 VERSION
 
-This document describes version 0.01 of App::Uni, released December 10, 2009.
+This document describes version 0.02 of App::Uni, released December 10, 2009.
 
 =head1 SYNOPSIS
 
@@ -72,7 +72,7 @@ Thank-you, Larry, for everything. ♡
 =head1 CC0 1.0 Universal
 
 To the extent possible under law, 唐鳳 has waived all copyright and related
-or neighboring rights to Module-Signature.
+or neighboring rights to App-Uni.
 
 This work is published from Taiwan.
 

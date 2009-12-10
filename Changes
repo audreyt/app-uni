@@ -1,3 +1,8 @@
+[Changes for 0.02 - 2009年12月10日 周四 08時13分22秒 CST]
+
+* Fix module name in POD.
+* Error messages are now printed witout tracing info.
+
 [Changes for 0.01 - 2009年12月10日 周四 07時59分22秒 CST]
 
 * First CPAN release.

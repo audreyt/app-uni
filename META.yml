@@ -21,4 +21,4 @@ requires:
   perl: 5.8.0
 resources:
   repository: http://github.com/audreyt/app-uni
-version: 0.01
+version: 0.02
