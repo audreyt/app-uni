@@ -1,0 +1,24 @@
+---
+abstract: 'Command-line utility to grep UnicodeData.txt'
+author:
+  - '唐鳳 <cpan@audreyt.org>'
+build_requires:
+  ExtUtils::MakeMaker: 6.42
+configure_requires:
+  ExtUtils::MakeMaker: 6.42
+distribution_type: module
+generated_by: 'Module::Install version 0.91'
+license: CC0
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: App-Uni
+no_index:
+  directory:
+    - inc
+    - t
+requires:
+  perl: 5.8.0
+resources:
+  repository: http://github.com/audreyt/app-uni
+version: 0.01
