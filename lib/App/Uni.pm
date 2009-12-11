@@ -1,10 +1,11 @@
 #!/usr/bin/perl
 package App::Uni;
 use 5.008;
+use utf8;
 use strict;
 use warnings;
 use constant SOURCE => 'unicore/UnicodeData.txt';
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub main {
     my ($file) = grep -f, map { "$_/".SOURCE } @INC
@@ -15,6 +16,11 @@ sub main {
         or die "Cannot open $file: $!$/";
 
     my $regex = join ' ', @_;
+    utf8::decode($regex);
+
+    if (length $regex == 1) {
+        $regex = sprintf('(?:%s|%04X)', $regex, ord $regex);
+    }
 
     while (<$fh>) {
         (/$regex/io and /(\w+);([^;]+)/) or next;
@@ -40,13 +46,16 @@ App::Uni - Command-line utility to grep UnicodeData.txt
 
 =head1 VERSION
 
-This document describes version 0.02 of App::Uni, released December 10, 2009.
+This document describes version 0.03 of App::Uni, released December 11, 2009.
 
 =head1 SYNOPSIS
 
-    $ uni smiling
+    $ uni smiling face
     263A ☺ WHITE SMILING FACE
     263B ☻ BLACK SMILING FACE
+
+    $ uni ☺
+    263A ☺ WHITE SMILING FACE
 
 =head1 DESCRIPTION
 
@@ -56,6 +65,9 @@ the Unicode database included in the current Perl 5 installation.
 The arguments to the F<uni> program are joined with space and interpreted
 as a regular expression.  Character codes or names matching the regex
 (case-insensitively) are then printed out.
+
+If the argument is a single character, then the character itself is also
+printed out in addition to code and name matches.
 
 =head1 ACKNOWLEDGEMENTS
 

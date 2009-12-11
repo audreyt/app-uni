@@ -1,3 +1,8 @@
+[Changes for 0.03 - 2009年12月11日 周五 20時28分31秒 CST]
+
+* If the argument to "uni" is a single character, then the character
+  itself is also printed out in addition to code and name matches.
+
 [Changes for 0.02 - 2009年12月10日 周四 08時13分22秒 CST]
 
 * Fix module name in POD.
