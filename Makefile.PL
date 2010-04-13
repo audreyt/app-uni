@@ -1,12 +1,17 @@
 #!/usr/local/bin/perl
 
-use strict;
+use v5.12.0;
 use inc::Module::Install;
 
 name           'App-Uni';
 license        'CC0';
-all_from       'lib/App/Uni.pm';
-readme_from    'lib/App/Uni.pm';
+
+given ('lib/App/Uni.pm') {
+    all_from $_;
+    readme_from $_;
+    readme_markdown_from $_;
+}
+
 repository     'http://github.com/audreyt/app-uni';
 install_script 'bin/uni';
 

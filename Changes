@@ -1,3 +1,9 @@
+[Changes for v0.12.0 - 2010年 4月13日 周二 21時43分46秒 CST]
+
+* This module now requires Perl v5.12.0.
+
+* Improved matching speed using memory-intensive :mmap and for(<$fh>) loops.
+
 [Changes for 0.03 - 2009年12月11日 周五 20時28分31秒 CST]
 
 * If the argument to "uni" is a single character, then the character

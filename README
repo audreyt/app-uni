@@ -2,8 +2,8 @@ NAME
     App::Uni - Command-line utility to grep UnicodeData.txt
 
 VERSION
-    This document describes version 0.03 of App::Uni, released December 11,
-    2009.
+    This document describes version v0.12.0 of App::Uni, released April 13,
+    2010.
 
 SYNOPSIS
         $ uni smiling face

@@ -1,36 +1,27 @@
-#!/usr/bin/perl
-package App::Uni;
-use 5.008;
-use utf8;
-use strict;
-use warnings;
-use constant SOURCE => 'unicore/UnicodeData.txt';
-our $VERSION = '0.03';
+use v5.12.0;
+package App::Uni v0.12.0;
+use open ':std' => ':utf8';
 
 sub main {
-    my ($file) = grep -f, map { "$_/".SOURCE } @INC
-        or die "Cannot find: ".SOURCE.$/;
+    my ($file) = grep { -f and -r }
+                  map { "$_/unicore/UnicodeData.txt" } @INC
+        or die 'Cannot find UnicodeData.txt in @INC';
 
-    binmode STDOUT, ':utf8';
-    open my $fh, '<', $file
-        or die "Cannot open $file: $!$/";
-
-    my $regex = join ' ', @_;
-    utf8::decode($regex);
+    utf8::decode(
+        my $regex = join(' ', @_)
+    );
 
     if (length $regex == 1) {
         $regex = sprintf('(?:%s|%04X)', $regex, ord $regex);
     }
 
-    while (<$fh>) {
-        (/$regex/io and /(\w+);([^;]+)/) or next;
-
-        my ($code, $name) = ($1, $2);
-        ($name =~ /$regex/io or $code =~ /$regex/io) or next;
-
-        print $code, ' ', chr hex $code, ' ', $name, $/;
+    open my $fh, '<:mmap', $file;
+    for (<$fh>) {
+        if (/$regex/io and my ($code, $name) = /(\w+);([^;]+)/) {
+            say $code, ' ', chr hex $code, ' ', $name
+                if [$name, $code] ~~ /$regex/io;
+        }
     }
-
     close $fh;
 }
 
@@ -46,7 +37,7 @@ App::Uni - Command-line utility to grep UnicodeData.txt
 
 =head1 VERSION
 
-This document describes version 0.03 of App::Uni, released December 11, 2009.
+This document describes version v0.12.0 of App::Uni, released April 13, 2010.
 
 =head1 SYNOPSIS
 
