@@ -1,3 +1,8 @@
+[Changes for v0.14.0 - 2011年 6月 7日 周二 04時24分09秒 CST]
+
+* Bundle UnicodeData.txt with this distribution as Perl 5.14 no longer
+  installs it.
+
 [Changes for v0.12.0 - 2010年 4月13日 周二 21時43分46秒 CST]
 
 * This module now requires Perl v5.12.0.

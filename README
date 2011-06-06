@@ -2,8 +2,8 @@ NAME
     App::Uni - Command-line utility to grep UnicodeData.txt
 
 VERSION
-    This document describes version v0.12.0 of App::Uni, released April 13,
-    2010.
+    This document describes version v0.14.0 of App::Uni, released June 7,
+    2011.
 
 SYNOPSIS
         $ uni smiling face
@@ -15,7 +15,7 @@ SYNOPSIS
 
 DESCRIPTION
     This module installs a simple program, uni, that helps grepping through
-    the Unicode database included in the current Perl 5 installation.
+    the Unicode database (bundled with this distribution).
 
     The arguments to the uni program are joined with space and interpreted
     as a regular expression. Character codes or names matching the regex

@@ -1,11 +1,13 @@
 use v5.12.0;
-package App::Uni v0.12.0;
+package App::Uni v0.14.0;
 use open ':std' => ':utf8';
+use File::ShareDir 'dist_dir';
 
 sub main {
-    my ($file) = grep { -f and -r }
-                  map { "$_/unicore/UnicodeData.txt" } @INC
-        or die 'Cannot find UnicodeData.txt in @INC';
+    my $dir = dist_dir('App-Uni');
+    my $file = "$dir/UnicodeData.txt";
+    (-f $file and -r $file)
+        or die "Cannot find UnicodeData.txt in $dir";
 
     utf8::decode(
         my $regex = join(' ', @_)
@@ -37,7 +39,7 @@ App::Uni - Command-line utility to grep UnicodeData.txt
 
 =head1 VERSION
 
-This document describes version v0.12.0 of App::Uni, released April 13, 2010.
+This document describes version v0.14.0 of App::Uni, released June 7, 2011.
 
 =head1 SYNOPSIS
 
@@ -51,7 +53,7 @@ This document describes version v0.12.0 of App::Uni, released April 13, 2010.
 =head1 DESCRIPTION
 
 This module installs a simple program, F<uni>, that helps grepping through
-the Unicode database included in the current Perl 5 installation.
+the Unicode database (bundled with this distribution).
 
 The arguments to the F<uni> program are joined with space and interpreted
 as a regular expression.  Character codes or names matching the regex

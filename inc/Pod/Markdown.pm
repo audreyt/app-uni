@@ -4,7 +4,9 @@ use strict;
 use warnings;
 
 package Pod::Markdown;
-our $VERSION = '1.100860';
+BEGIN {
+  $Pod::Markdown::VERSION = '1.110730';
+}
 # ABSTRACT: Convert POD to Markdown
 use parent qw(Pod::Parser);
 
@@ -21,7 +23,7 @@ sub _private {
         Text      => [],       # final text
         Indent    => 0,        # list indent levels counter
         ListType  => '-',      # character on every item
-        searching => undef,    # what are we searching for? (title, author etc.)
+        searching => ''   ,    # what are we searching for? (title, author etc.)
         Title     => undef,    # page title
         Author    => undef,    # page author
     };
@@ -59,6 +61,12 @@ sub _save {
     return;
 }
 
+sub _unsave {
+    my $parser = shift;
+    my $data = $parser->_private;
+    return pop @{ $data->{Text} };
+}
+
 sub _indent_text {
     my ($parser, $text) = @_;
     my $data   = $parser->_private;
@@ -73,8 +81,7 @@ sub _indent_text {
 }
 
 sub _clean_text {
-    my $parser  = shift;
-    my $text    = shift;
+    my $text    = $_[1];
     my @trimmed = grep { $_; } split(/\n/, $text);
     return wantarray ? @trimmed : join("\n", @trimmed);
 }
@@ -90,15 +97,17 @@ sub command {
     if ($command =~ m{head(\d)}xms) {
         my $level = $1;
 
+        $paragraph = $parser->interpolate($paragraph, $line_num);
+
         # the headers never are indented
-        $parser->_save(sprintf '%s %s', '#' x $level, $paragraph);
+        $parser->_save($parser->format_header($level, $paragraph));
         if ($level == 1) {
             if ($paragraph =~ m{NAME}xmsi) {
                 $data->{searching} = 'title';
             } elsif ($paragraph =~ m{AUTHOR}xmsi) {
                 $data->{searching} = 'author';
             } else {
-                $data->{searching} = undef;
+                $data->{searching} = '';
             }
         }
     }
@@ -114,9 +123,21 @@ sub command {
 
         # decrement indent level
         $data->{Indent}--;
+        $data->{searching} = '';
     } elsif ($command =~ m{item}xms) {
-        $parser->_save(sprintf '%s %s',
-            $data->{ListType}, $parser->interpolate($paragraph, $line_num));
+        $paragraph = $parser->interpolate($paragraph, $line_num);
+        $paragraph =~ s{^\h* \* \h*}{}xms;
+
+        if ($data->{searching} eq 'listpara') {
+            $data->{searching} = 'listheadhuddled';
+        }
+        else {
+            $data->{searching} = 'listhead';
+        }
+
+        if (length $paragraph) {
+            $parser->textblock($paragraph, $line_num);
+        }
     }
 
     # ignore other commands
@@ -124,7 +145,7 @@ sub command {
 }
 
 sub verbatim {
-    my ($parser, $paragraph, $line_num) = @_;
+    my ($parser, $paragraph) = @_;
     $parser->_save($paragraph);
 }
 
@@ -139,11 +160,18 @@ sub textblock {
     $paragraph = $parser->_clean_text($paragraph);
 
     # searching ?
-    if ($data->{searching}) {
-        if ($data->{searching} =~ m{title|author}xms) {
-            $data->{ ucfirst $data->{searching} } = $paragraph;
-            $data->{searching} = undef;
+    if ($data->{searching} =~ m{title|author}xms) {
+        $data->{ ucfirst $data->{searching} } = $paragraph;
+        $data->{searching} = '';
+    } elsif ($data->{searching} =~ m{listhead(huddled)?$}xms) {
+        my $is_huddled = $1;
+        $paragraph = sprintf '%s %s', $data->{ListType}, $paragraph;
+        if ($is_huddled) {
+            $paragraph = $parser->_unsave() . "\n" . $paragraph;
         }
+        $data->{searching} = 'listpara';
+    } elsif ($data->{searching} eq 'listpara') {
+        $data->{searching} = '';
     }
 
     # save the text
@@ -151,8 +179,7 @@ sub textblock {
 }
 
 sub interior_sequence {
-    my ($parser, $seq_command, $seq_argument, $pod_seq) = @_;
-    my $data      = $parser->_private;
+    my ($seq_command, $seq_argument, $pod_seq) = @_[1..3];
     my %interiors = (
         'I' => sub { return '_' . $_[1] . '_' },      # italic
         'B' => sub { return '__' . $_[1] . '__' },    # bold
@@ -160,7 +187,7 @@ sub interior_sequence {
         'F' => sub { return '`' . $_[1] . '`' },      # system path
         'S' => sub { return '`' . $_[1] . '`' },      # code
         'E' => sub {
-            my ($seq, $charname) = @_;
+            my $charname = $_[1];
             return '<' if $charname eq 'lt';
             return '>' if $charname eq 'gt';
             return '|' if $charname eq 'verbar';
@@ -178,20 +205,32 @@ sub interior_sequence {
 }
 
 sub _resolv_link {
-    my ($cmd, $arg, $pod_seq) = @_;
-    if ($arg =~ m{^http|ftp}xms) {
+    my ($cmd, $arg) = @_;
+    my $text = $arg =~ s"^(.+?)\|"" ? $1 : '';
 
-        # direct link to a URL
-        return sprintf '<%s>', $arg;
-    } elsif ($arg =~ m{^(\w+(::\w+)*)$}) {
-        return "[$1](http://search.cpan.org/perldoc?$1)";
+    if ($arg =~ m{^http|ftp}xms) { # direct link to a URL
+        $text ||= $arg;
+        return sprintf '[%s](%s)', $text, $arg;
+    } elsif ($arg =~ m{^/(.*)$}) {
+        $text ||= $1;
+        $text = $1;
+        return "[$text](\#pod_$1)";
+    } elsif ($arg =~ m{^(\w+(?:::\w+)*)$}) {
+        $text ||= $1;
+        return "[$text](http://search.cpan.org/perldoc?$1)";
     } else {
         return sprintf '%s<%s>', $cmd, $arg;
     }
 }
+
+sub format_header {
+    my ($level, $paragraph) = @_[1,2];
+    sprintf '%s %s', '#' x $level, $paragraph;
+}
+
 1;
 
 
 __END__
-#line 282
+#line 341
 

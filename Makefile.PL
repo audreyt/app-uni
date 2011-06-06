@@ -5,6 +5,7 @@ use inc::Module::Install;
 
 name           'App-Uni';
 license        'CC0';
+requires       'File::ShareDir';
 
 given ('lib/App/Uni.pm') {
     all_from $_;
@@ -14,6 +15,7 @@ given ('lib/App/Uni.pm') {
 
 repository     'http://github.com/audreyt/app-uni';
 install_script 'bin/uni';
+install_share  'share';
 
 sign; WriteAll;
 

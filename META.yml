@@ -7,8 +7,8 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.42
 distribution_type: module
-generated_by: 'Module::Install version 0.95'
-license: CC0
+generated_by: 'Module::Install version 1.01'
+license: cc0
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
@@ -16,9 +16,11 @@ name: App-Uni
 no_index:
   directory:
     - inc
+    - share
     - t
 requires:
+  File::ShareDir: 0
   perl: 5.12.0
 resources:
   repository: http://github.com/audreyt/app-uni
-version: v0.12.0
+version: v0.14.0
