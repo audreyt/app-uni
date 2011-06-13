@@ -1,7 +1,9 @@
 use v5.12.0;
-package App::Uni v0.14.0;
+# package App::Uni v0.14.0; # XXX Confuses M:I
+package App::Uni;
+our $VERSION = 'v0.14.0';
 use open ':std' => ':utf8';
-use File::ShareDir 'dist_dir';
+use File::ShareDir 1.03 'dist_dir';
 
 sub main {
     my $dir = dist_dir('App-Uni');

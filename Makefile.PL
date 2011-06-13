@@ -1,22 +1,5 @@
 #!/usr/local/bin/perl
-
-use v5.12.0;
-use inc::Module::Install;
-
-name           'App-Uni';
-license        'CC0';
-requires       'File::ShareDir';
-
-given ('lib/App/Uni.pm') {
-    all_from $_;
-    readme_from $_;
-    readme_markdown_from $_;
-}
-
-repository     'http://github.com/audreyt/app-uni';
-install_script 'bin/uni';
-install_share  'share';
-
-sign; WriteAll;
-
-1;
+use utf8;
+                                            # to pick up M:P:Au for now...
+                                            use lib 'lib';
+use inc::Module::Package 'Au:現代 0.01';
