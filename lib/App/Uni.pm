@@ -1,7 +1,7 @@
 use v5.12.0;
-# package App::Uni v0.14.0; # XXX Confuses M:I
 package App::Uni;
-our $VERSION = 'v0.14.0';
+use version;
+our $VERSION = qv('v5.14.0');
 use open ':std' => ':utf8';
 use File::ShareDir 1.03 'dist_dir';
 
