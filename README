@@ -2,13 +2,15 @@ NAME
     App::Uni - Command-line utility to grep UnicodeData.txt
 
 VERSION
-    This document describes version 0.02 of App::Uni, released December 10,
-    2009.
+    This document describes version 6 of App::Uni, released June 19, 2011.
 
 SYNOPSIS
-        $ uni smiling
+        $ uni smiling face
         263A ☺ WHITE SMILING FACE
         263B ☻ BLACK SMILING FACE
+
+        $ uni ☺
+        263A ☺ WHITE SMILING FACE
 
 DESCRIPTION
     This module installs a simple program, uni, that helps grepping through
@@ -17,6 +19,9 @@ DESCRIPTION
     The arguments to the uni program are joined with space and interpreted
     as a regular expression. Character codes or names matching the regex
     (case-insensitively) are then printed out.
+
+    If the argument is a single non-ASCII character, then the character
+    itself is printed instead.
 
 ACKNOWLEDGEMENTS
     This is a re-implementation of a same-named program Larry copied to me,
