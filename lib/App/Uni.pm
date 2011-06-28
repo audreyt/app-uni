@@ -3,8 +3,9 @@ package App::Uni;
 use 5.008;
 use strict;
 use warnings;
+use version;
 
-our $VERSION = '0.02';
+our $VERSION = qv("v5.14.1");
 
 sub main {
     binmode STDOUT, ':utf8';

@@ -1,3 +1,12 @@
+[Changes for v5.14.1 - 2011年 6月28日 周二 22時55分35秒 CST]
+
+* No functional changes.
+
+* Add "app" and "unicode" keywords to META.yml to see if they
+  will show up somewhere on search.cpan.org or metacpan...
+
+  (Thanks to @confound++ for wondering about keywords on IRC.)
+
 [Changes for v5.14.0 - 2011年 6月13日 周一 11時36分52秒 CST]
 
 * Bump version number since 0.014 < 0.200.
