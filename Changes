@@ -1,3 +1,7 @@
+[Changes for v7 - 2011年 6月28日 周二 23時28分09秒 CST]
+
+* Bump version since 5.014001 < 6.000.
+
 [Changes for v5.14.1 - 2011年 6月28日 周二 22時55分35秒 CST]
 
 * No functional changes.
@@ -6,6 +10,16 @@
   will show up somewhere on search.cpan.org or metacpan...
 
   (Thanks to @confound++ for wondering about keywords on IRC.)
+
+[Changes for v6 - 2011年 6月19日 周日 07時05分46秒 CST]
+
+* Unbundle UnicodeData.txt, using Perl-supplied unicore/Name.pl instead. (RJBS)
+
+* If the argument is a single non-ASCII character, the character itself
+  is no longer printed.
+
+* If the argument is a single non-ASCII character, then the character
+  itself is printed instead.
 
 [Changes for v5.14.0 - 2011年 6月13日 周一 11時36分52秒 CST]
 

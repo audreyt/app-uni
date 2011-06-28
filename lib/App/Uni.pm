@@ -3,18 +3,24 @@ package App::Uni;
 use 5.008;
 use strict;
 use warnings;
-use version;
 
-our $VERSION = qv("v5.14.1");
+our $VERSION = 7;
 
 sub main {
     binmode STDOUT, ':utf8';
+    my $regex = join ' ', @_;
+    utf8::decode($regex);
+
+    if (length $regex == 1 and ord($regex) >= 128) {
+        require charnames;
+        printf "%04X %s %s$/", ord $regex, $regex, charnames::viacode(ord $regex);
+        exit;
+    }
+
     my $str = require 'unicore/Name.pl';
 
     open my $fh, '<', \$str
         or die "Cannot open unicore data: $!$/";
-
-    my $regex = join ' ', @_;
 
     while (<$fh>) {
         chomp;
@@ -24,6 +30,7 @@ sub main {
         ($name =~ /$regex/io or $code =~ /$regex/io) or next;
 
         next if $code =~ / /; # if we want to avoid named sequences
+        $code =~ s/^0(....)/$1/;
         my $chr = join q{}, map {; chr hex } split /\s+/, $code;
         print $code, ' ', $chr, ' ', $name, $/;
     }
@@ -43,13 +50,16 @@ App::Uni - Command-line utility to grep UnicodeData.txt
 
 =head1 VERSION
 
-This document describes version 0.02 of App::Uni, released December 10, 2009.
+This document describes version 6 of App::Uni, released June 19, 2011.
 
 =head1 SYNOPSIS
 
-    $ uni smiling
+    $ uni smiling face
     263A ☺ WHITE SMILING FACE
     263B ☻ BLACK SMILING FACE
+
+    $ uni ☺
+    263A ☺ WHITE SMILING FACE
 
 =head1 DESCRIPTION
 
@@ -59,6 +69,9 @@ the Unicode database included in the current Perl 5 installation.
 The arguments to the F<uni> program are joined with space and interpreted
 as a regular expression.  Character codes or names matching the regex
 (case-insensitively) are then printed out.
+
+If the argument is a single non-ASCII character, then the character itself
+is printed instead.
 
 =head1 ACKNOWLEDGEMENTS
 

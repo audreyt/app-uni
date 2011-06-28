@@ -1,4 +1,2 @@
 #!/usr/bin/env perl
 use inc::Module::Package 'Au:dry 1';
-keywords qw[ app unicode ];
-requires 'version';
