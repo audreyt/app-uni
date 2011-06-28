@@ -48,10 +48,6 @@ __END__
 
 App::Uni - Command-line utility to grep UnicodeData.txt
 
-=head1 VERSION
-
-This document describes version 6 of App::Uni, released June 19, 2011.
-
 =head1 SYNOPSIS
 
     $ uni smiling face
