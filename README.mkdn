@@ -2,10 +2,6 @@
 
 App::Uni - Command-line utility to grep UnicodeData.txt
 
-# VERSION
-
-This document describes version 6 of App::Uni, released June 19, 2011.
-
 # SYNOPSIS
 
     $ uni smiling face
@@ -14,6 +10,10 @@ This document describes version 6 of App::Uni, released June 19, 2011.
 
     $ uni ☺
     263A ☺ WHITE SMILING FACE
+
+    # Only on Perl 5.14+
+    $ uni wry
+    1F63C 😼 CAT FACE WITH WRY SMILE
 
 # DESCRIPTION
 
@@ -26,6 +26,11 @@ as a regular expression.  Character codes or names matching the regex
 
 If the argument is a single non-ASCII character, then the character itself
 is printed instead.
+
+# NOTES
+
+If you'd like to search for Emojis in Unicode 6.0, please upgrade to Perl 5.14!
+See [http://www.perlbrew.pl](http://www.perlbrew.pl) for one possible way to build a local Perl 5.14.
 
 # ACKNOWLEDGEMENTS
 

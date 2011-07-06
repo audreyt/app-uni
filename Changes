@@ -1,3 +1,8 @@
+[Changes for v8 - 2011年 7月 6日 周三 08時32分43秒 CST]
+
+* Add advertisement for user to upgrade to Perl 5.14 just
+  for searching Emojis. (@rjbs, @miyagawa)
+
 [Changes for v7 - 2011年 6月28日 周二 23時28分09秒 CST]
 
 * Bump version since 5.014001 < 6.000.

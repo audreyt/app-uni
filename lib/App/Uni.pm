@@ -4,7 +4,7 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = 7;
+our $VERSION = 8;
 
 sub main {
     binmode STDOUT, ':utf8';
@@ -57,6 +57,10 @@ App::Uni - Command-line utility to grep UnicodeData.txt
     $ uni ☺
     263A ☺ WHITE SMILING FACE
 
+    # Only on Perl 5.14+
+    $ uni wry
+    1F63C 😼 CAT FACE WITH WRY SMILE
+
 =head1 DESCRIPTION
 
 This module installs a simple program, F<uni>, that helps grepping through
@@ -68,6 +72,11 @@ as a regular expression.  Character codes or names matching the regex
 
 If the argument is a single non-ASCII character, then the character itself
 is printed instead.
+
+=head1 NOTES
+
+If you'd like to search for Emojis in Unicode 6.0, please upgrade to Perl 5.14!
+See L<http://www.perlbrew.pl> for one possible way to build a local Perl 5.14.
 
 =head1 ACKNOWLEDGEMENTS
 
